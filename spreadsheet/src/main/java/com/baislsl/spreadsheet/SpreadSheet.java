@@ -32,6 +32,7 @@ public class SpreadSheet {
         display = new Display();
         shell = new Shell(display);
         shell.setLayout(new GridLayout());
+        csvTable = new CsvTable(shell);
         props = new Properties();
         try {
             props.load(SpreadSheet.class.getResourceAsStream(PROP_PATH));
@@ -108,8 +109,6 @@ public class SpreadSheet {
 
         if (reader != null) {
             lastPath = path;
-            if (csvTable != null) csvTable.dispose();
-            csvTable = new CsvTable(shell);
             csvTable.load(reader);
             csvTable.setFocus();
             shell.setText(lastPath);

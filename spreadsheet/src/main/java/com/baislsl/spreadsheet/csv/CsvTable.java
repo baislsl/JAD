@@ -26,7 +26,6 @@ import java.util.List;
 public class CsvTable extends ScrolledComposite implements CsvEditor {
     private final static Logger log = LoggerFactory.getLogger(CsvTable.class);
 
-    private CSVReader reader;
     private Table table;
     private TableEditor editor;
     private MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -66,23 +65,22 @@ public class CsvTable extends ScrolledComposite implements CsvEditor {
         super(parent, style);
         setLayout(new GridLayout());
         setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        table = new Table(this, SWT.NO_SCROLL | SWT.FULL_SELECTION);
-        setUpTable();
-
-        setContent(table);
         setExpandHorizontal(true);
         setExpandVertical(true);
         setAlwaysShowScrollBars(true);
-        setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        setUpTable();
     }
 
     private void setUpTable() {
+        if(table != null) table.dispose();
+        table = new Table(this, SWT.NO_SCROLL | SWT.FULL_SELECTION);
         table.setLinesVisible(true);
         editor = new TableEditor(table);
         editor.horizontalAlignment = SWT.LEFT;
         editor.grabHorizontal = true;
         table.addMouseListener(mouseAdapter);
+        setContent(table);
+        setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 
     private Point fetchLocation(Point pt) {
@@ -111,8 +109,7 @@ public class CsvTable extends ScrolledComposite implements CsvEditor {
 
     @Override
     public void load(CSVReader reader) {
-        this.reader = reader;
-        table.clearAll();
+        setUpTable();
         int columnCount = table.getColumnCount();
 
         for (String[] items : reader) {
