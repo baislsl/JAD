@@ -20,13 +20,43 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CsvTable extends ScrolledComposite implements CsvEditor {
     private final static Logger log = LoggerFactory.getLogger(CsvTable.class);
 
     private CSVReader reader;
-    private final Table table;
+    private Table table;
+    private TableEditor editor;
+    private MouseAdapter mouseAdapter = new MouseAdapter() {
+        @Override
+        public void mouseDoubleClick(MouseEvent event) {
+            Control old = editor.getEditor();
+            if (old != null)
+                old.dispose();
+            Point location = fetchLocation(new Point(event.x, event.y));
+            if (location == null)
+                return;
+
+            int col= location.x, row = location.y;
+            TableItem item = table.getItem(row);
+            final Text text = new Text(table, SWT.NONE);
+            text.setForeground(item.getForeground());
+            text.setText(item.getText(col));
+            text.setForeground(item.getForeground());
+            text.selectAll();
+            text.setFocus();
+
+            editor.minimumWidth = text.getBounds().width;
+            editor.setEditor(text, item, col);
+            text.addModifyListener(new ModifyListener() {
+                public void modifyText(ModifyEvent event) {
+                    setContent(col, row, text.getText());
+                }
+            });
+        }
+    };
 
     public CsvTable(Composite parent) {
         this(parent, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -49,57 +79,34 @@ public class CsvTable extends ScrolledComposite implements CsvEditor {
 
     private void setUpTable() {
         table.setLinesVisible(true);
-
-        final TableEditor editor = new TableEditor(table);
+        editor = new TableEditor(table);
         editor.horizontalAlignment = SWT.LEFT;
         editor.grabHorizontal = true;
-        table.addMouseListener(new MouseAdapter() {
-            int col = -1, row = -1;
+        table.addMouseListener(mouseAdapter);
+    }
 
-            @Override
-            public void mouseDoubleClick(MouseEvent event) {
-                Control old = editor.getEditor();
-                if (old != null)
-                    old.dispose();
-
-                Point pt = new Point(event.x, event.y);
-
-                for (int i = 0; i < table.getItemCount(); i++) {
-                    Rectangle rect = table.getItem(i).getBounds();
-                    if (rect.y <= event.y && event.y <= rect.y + rect.height) {
-                        row = i;
-                        break;
-                    }
-                }
-                if (row == -1) return;
-
-                final TableItem item = table.getItem(row);
-                if (item == null) return;
-                for (int i = 0, n = table.getColumnCount(); i < n; i++) {
-                    Rectangle rect = item.getBounds(i);
-                    if (rect.contains(pt)) {
-                        col = i;
-                        break;
-                    }
-                }
-                if (col == -1) return;
-
-                final Text text = new Text(table, SWT.NONE);
-                text.setForeground(item.getForeground());
-                text.setText(item.getText(col));
-                text.setForeground(item.getForeground());
-                text.selectAll();
-                text.setFocus();
-
-                editor.minimumWidth = text.getBounds().width;
-                editor.setEditor(text, item, col);
-                text.addModifyListener(new ModifyListener() {
-                    public void modifyText(ModifyEvent event) {
-                        setContent(col, row, text.getText());
-                    }
-                });
+    private Point fetchLocation(Point pt) {
+        Point ans = new Point(-1, -1);
+        for (int i = 0; i < table.getItemCount(); i++) {
+            Rectangle rect = table.getItem(i).getBounds();
+            if (rect.y <= pt.y && pt.y <= rect.y + rect.height) {
+                ans.y = i;
+                break;
             }
-        });
+        }
+        if (ans.y == -1) return null;
+
+        TableItem item = table.getItem(ans.y);
+        if (item == null) return null;
+        for (int i = 0, n = table.getColumnCount(); i < n; i++) {
+            Rectangle rect = item.getBounds(i);
+            if (rect.contains(pt)) {
+                ans.x = i;
+                break;
+            }
+        }
+        if (ans.x == -1) return null;
+        return ans;
     }
 
     @Override

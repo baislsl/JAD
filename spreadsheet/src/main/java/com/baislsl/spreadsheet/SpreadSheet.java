@@ -113,7 +113,6 @@ public class SpreadSheet {
             csvTable.load(reader);
             csvTable.setFocus();
             shell.setText(lastPath);
-            shell.pack();
             start();
         }
     }
