@@ -3,13 +3,13 @@ package com.baislsl.spreadsheet;
 import com.baislsl.spreadsheet.csv.CsvEditor;
 import com.baislsl.spreadsheet.csv.CsvTable;
 import com.opencsv.CSVReader;
-import com.sun.istack.internal.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStreamReader;
@@ -33,7 +33,6 @@ public class SpreadSheet {
     public void onOpenDialog() {
         onOpenDialog(Paths.get(".").toAbsolutePath().toString());
     }
-
     public void onOpenDialog(@Nullable String path) {
         FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
         fileDialog.setFilterPath(path);
