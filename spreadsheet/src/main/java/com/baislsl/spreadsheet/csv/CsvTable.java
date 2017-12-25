@@ -130,9 +130,9 @@ public class CsvTable extends ScrolledComposite implements CsvEditor {
         int col = table.getColumnCount();
         int row = table.getItemCount();
         for (int i = 0; i < row; i++) {
-            java.util.List<String> texts = new ArrayList<>(col);
+            java.util.List<String> texts = new ArrayList<>();
             for (int j = 0; j < col; j++) {
-                texts.set(i, table.getItem(i).getText(j));
+                texts.add(table.getItem(i).getText(j));
             }
             csvWriter.writeNext(texts.toArray(new String[0]));
         }
