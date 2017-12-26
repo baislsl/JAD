@@ -1,0 +1,4 @@
+10.180.17.246 - - [24/Dec/2017:09:31:44 +0800] "POST /login.php HTTP/1.1" 302 452 "http://fm.zju.edu.cn/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
+10.180.17.246 - - [24/Dec/2017:09:31:44 +0800] "GET /index.php HTTP/1.1" 200 1400 "http://fm.zju.edu.cn/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
+10.180.17.246 - - [24/Dec/2017:09:32:17 +0800] "GET /showCourse.php?id=57 HTTP/1.1" 200 1894 "http://fm.zju.edu.cn/index.php" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
+10.180.17.246 - - [24/Dec/2017:09:33:14 +0800] "GET /showCourse.php?id=126 HTTP/1.1" 200 3765 "http://fm.zju.edu.cn/showCourse.php?id=57" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
