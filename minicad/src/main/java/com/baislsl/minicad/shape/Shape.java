@@ -37,4 +37,6 @@ public interface Shape {
         c.addMouseListener(getMouseListener());
         c.addMouseMoveListener(getMouseMoveListener());
     }
+
+    void uninstall(Canvas c);
 }

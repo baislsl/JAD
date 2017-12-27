@@ -24,6 +24,7 @@ public class ShapeCreator implements Shape {
     private ShapeType shapeType;
     private DrawBoard drawBoard;
     private Shape currentShape;
+    private MouseListener preMouseListener;
 
     private MouseListener mouseListener = new MouseAdapter() {
         @Override
@@ -39,26 +40,29 @@ public class ShapeCreator implements Shape {
             log.info("mouseUp at ({}, {})", e.x, e.y);
             inDrag = false;
 
-            if(currentShape != null) drawBoard.removeShape(currentShape);
+            if (currentShape != null) drawBoard.removeShape(currentShape);
             drawBoard.addShape(currentShape);
             drawBoard.redraw();
+
+            uninstall(drawBoard.getCanvas());
         }
     };
 
     private MouseMoveListener mouseMoveListener = e -> {
         // log.info("mouseMove at ({}, {})", e.x, e.y);
-        if(!inDrag) return;
+        if (!inDrag) return;
         x2 = e.x;
         y2 = e.y;
-        if(currentShape != null) drawBoard.removeShape(currentShape);
+        if (currentShape != null) drawBoard.removeShape(currentShape);
         currentShape = generateShape();
         drawBoard.addShape(currentShape);
         drawBoard.redraw();
     };
 
-    public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard) {
+    public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard, MouseListener preMouseListener) {
         this.shapeType = shapeType;
         this.drawBoard = drawBoard;
+        this.preMouseListener = preMouseListener;
     }
 
     private Shape generateShape() {
@@ -112,4 +116,10 @@ public class ShapeCreator implements Shape {
         throw new RuntimeException("Shape creator should not have intersects method");
     }
 
+    @Override
+    public void uninstall(Canvas c) {
+        c.removeMouseListener(mouseListener);
+        c.removeMouseMoveListener(mouseMoveListener);
+        c.addMouseListener(preMouseListener);
+    }
 }

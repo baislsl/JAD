@@ -3,6 +3,7 @@ package com.baislsl.minicad.shape;
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
@@ -18,15 +19,21 @@ abstract class AbstractShape implements Shape {
     protected int width;
     protected Mode mode;
     protected DrawBoard canvas;
+    private MouseListener preMouseListener;
 
     AbstractShape(DrawBoard canvas) {
-        this(canvas, Display.getCurrent().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
+        this(canvas, Display.getCurrent().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH, null);
     }
 
-    AbstractShape(DrawBoard canvas, Color color, int width) {
+    AbstractShape(DrawBoard canvas, MouseListener preMouseListener) {
+        this(canvas, Display.getCurrent().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH, preMouseListener);
+    }
+
+    AbstractShape(DrawBoard canvas, Color color, int width, MouseListener preMouseListener) {
         this.canvas = canvas;
         this.color = color;
         this.width = width;
+        this.preMouseListener = preMouseListener;
     }
 
     @Override
@@ -47,6 +54,13 @@ abstract class AbstractShape implements Shape {
     @Override
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    @Override
+    public void uninstall(Canvas c) {
+        c.removeMouseListener(getMouseListener());
+        c.removeMouseMoveListener(getMouseMoveListener());
+        c.addMouseListener(preMouseListener);
     }
 
     protected Color onOpenSetColorPanel() {

@@ -57,14 +57,6 @@ public class LineShape extends AbstractShape {
         this.y2 = y2;
     }
 
-    public LineShape(DrawBoard canvas) {
-        super(canvas);
-    }
-
-    public LineShape(DrawBoard canvas, Color color, int width){
-        super(canvas, color, width);
-    }
-
     @Override
     public void render(GC gc) {
         gc.setForeground(color);

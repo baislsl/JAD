@@ -32,9 +32,8 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
         public void mouseDown(MouseEvent e) {
             log.info("mouseDown at ({}, {})", e.x, e.y);
             if (currentMode == Mode.CREATE) {
-                ShapeCreator creator = new ShapeCreator(currentShapeType, DrawPanel.this);
+                ShapeCreator creator = new ShapeCreator(currentShapeType, DrawPanel.this, defaultMouseAdapter);
                 creator.install(canvas);
-                // TODO: how to know when to uninstall canvas
             } else {    // DELETE
                 Shape shape = fetchShape(e.x, e.y);
                 if (shape == null) return;
