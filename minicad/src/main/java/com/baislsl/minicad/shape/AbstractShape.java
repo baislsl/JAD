@@ -1,5 +1,6 @@
 package com.baislsl.minicad.shape;
 
+import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -16,13 +17,13 @@ abstract class AbstractShape implements Shape {
     protected Color color;
     protected int width;
     protected Mode mode;
-    protected Canvas canvas;
+    protected DrawBoard canvas;
 
-    AbstractShape(Canvas canvas) {
+    AbstractShape(DrawBoard canvas) {
         this(canvas, Display.getCurrent().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
     }
 
-    AbstractShape(Canvas canvas, Color color, int width) {
+    AbstractShape(DrawBoard canvas, Color color, int width) {
         this.canvas = canvas;
         this.color = color;
         this.width = width;

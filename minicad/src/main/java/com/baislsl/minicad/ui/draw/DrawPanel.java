@@ -2,6 +2,7 @@ package com.baislsl.minicad.ui.draw;
 
 import com.baislsl.minicad.shape.LineShape;
 import com.baislsl.minicad.shape.Shape;
+import com.baislsl.minicad.shape.ShapeCreator;
 import com.baislsl.minicad.util.Mode;
 import com.baislsl.minicad.util.ShapeType;
 import org.eclipse.swt.SWT;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrawPanel extends Composite implements MessageReceiver {
+public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
     private final static Logger log = LoggerFactory.getLogger(DrawPanel.class);
     private final static int CANVAS_SIZE = 500;
     private Canvas canvas;
@@ -29,26 +30,15 @@ public class DrawPanel extends Composite implements MessageReceiver {
     private MouseAdapter defaultMouseAdapter = new MouseAdapter() {
         @Override
         public void mouseDown(MouseEvent e) {
-            super.mouseDown(e);
             log.info("mouseDown at ({}, {})", e.x, e.y);
             if (currentMode == Mode.CREATE) {
-                if (currentShapeType == ShapeType.LINE) {
-                    currentShape = new LineShape(canvas);
-                }
-                shapeList.add(currentShape);
-                currentShape.install(canvas);
-                canvas.redraw();
-            } else {
+                ShapeCreator creator = new ShapeCreator(currentShapeType, DrawPanel.this);
+                creator.install(canvas);
+                // TODO: how to know when to uninstall canvas
+            } else {    // DELETE
                 Shape shape = fetchShape(e.x, e.y);
                 if (shape == null) return;
-
-                // TODO
-                switch (currentMode) {
-                    case DELETE:
-                    case COLOR:
-                    case BOLD:
-                    default:
-                }
+                shapeList.remove(shape);
             }
         }
     };
@@ -87,5 +77,31 @@ public class DrawPanel extends Composite implements MessageReceiver {
     private Shape fetchShape(int x, int y) {
         // TODO search for shape
         throw new RuntimeException("TODO: fetch shape");
+    }
+
+    @Override
+    public void redraw() {
+        canvas.redraw();
+    }
+
+    @Override
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    @Override
+    public void addShape(Shape shape) {
+        shapeList.add(shape);
+    }
+
+
+    @Override
+    public void removeShape(Shape shape) {
+        shapeList.remove(shape);
+    }
+
+    @Override
+    public void clear() {
+        shapeList.clear();
     }
 }

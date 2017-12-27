@@ -10,3 +10,12 @@
 可执行的jar文件。
 
 演示视频下载链接: https://pan.baidu.com/s/1dFaZ2Ml 密码: d3xg
+
+
+## design
+
+create, delete -> control panel
+
+color, width -> double click
+
+resize -> drag

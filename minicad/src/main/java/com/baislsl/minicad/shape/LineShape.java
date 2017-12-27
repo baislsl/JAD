@@ -1,6 +1,6 @@
 package com.baislsl.minicad.shape;
 
-import com.baislsl.minicad.util.Mode;
+import com.baislsl.minicad.ui.draw.DrawBoard;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -20,13 +20,6 @@ public class LineShape extends AbstractShape {
         @Override
         public void mouseDoubleClick(MouseEvent e) {
             log.info("mouseDoubleClick at ({}, {})", e.x, e.y);
-            if (mode == Mode.COLOR) {
-                Color color = onOpenSetColorPanel();
-                if(color != LineShape.this.color){
-                    LineShape.this.color = color;
-                    redraw();
-                }
-            }
         }
 
         @Override
@@ -56,11 +49,19 @@ public class LineShape extends AbstractShape {
         }
     };
 
-    public LineShape(Canvas canvas) {
+    LineShape(DrawBoard canvas, int x1, int y1, int x2, int y2){
+        super(canvas);
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+    }
+
+    public LineShape(DrawBoard canvas) {
         super(canvas);
     }
 
-    public LineShape(Canvas canvas, Color color, int width){
+    public LineShape(DrawBoard canvas, Color color, int width){
         super(canvas, color, width);
     }
 
