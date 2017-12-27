@@ -2,16 +2,19 @@ package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
+import com.baislsl.minicad.util.Util2D;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
@@ -25,6 +28,9 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
     protected final static double GAP = 2;
     protected boolean selected;
     protected Point dragBeginPoint;
+    protected Point currentPoint;
+    protected List<Point> featurePoints = new ArrayList<>();
+
 
     protected Color color;
     protected int width;
@@ -71,8 +77,16 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
     public void mouseDown(MouseEvent e) {
         log.info(e.toString());
         selected = true;
-        dragBeginPoint = new Point(e.x, e.y);
+        Point cur = new Point(e.x, e.y);
+        dragBeginPoint = cur;
         this.width += SELECT_WIDTH_INCREMENT;
+        currentPoint = featurePoints.stream()
+                .min((p1, p2) -> {
+                    double distance = Util2D.distance(p1, cur) - Util2D.distance(p2, cur);
+                    return distance > 0 ? 1 : (distance < 0 ? -1 : 0);
+                }).filter(p -> Util2D.distance(p, cur) < GAP)
+                .orElse(null);
+
         redraw();
     }
 
@@ -82,15 +96,51 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         log.info(e.toString());
         selected = false;
         dragBeginPoint = null;
+        currentPoint = null;
         this.width -= SELECT_WIDTH_INCREMENT;
         redraw();
     }
 
     @Override
     public void mouseMove(MouseEvent e) {
-        dragBeginPoint = new Point(e.x, e.y);
         // log.info("mouseMove at ({}, {})", e.x, e.y);
+        if (currentPoint != null) { // resize advance drag
+            currentPoint.x = e.x;
+            currentPoint.y = e.y;
+        } else if (selected) {    // drag
+            int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
+            for (Point p : featurePoints) {
+                p.x += dx;
+                p.y += dy;
+            }
+        }
         redraw();
+
+        // update drag point
+        dragBeginPoint = new Point(e.x, e.y);
+
+    }
+
+    @Override
+    public void render(GC gc) {
+        if (selected) {
+            Rectangle rectangle = getBounds();
+            if (rectangle != null) {
+                gc.setLineWidth(1);
+                gc.drawRectangle(rectangle);
+            }
+
+            for (Point p : featurePoints) {
+                if (p != currentPoint) {
+                    gc.setLineWidth(2);
+                    gc.drawOval(p.x - 1, p.y - 1, 2, 2);
+                }
+            }
+        }
+
+        if (currentPoint != null) {
+            gc.drawOval(currentPoint.x - 2, currentPoint.y - 2, 4, 4);
+        }
     }
 
     @Override
@@ -113,11 +163,6 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
 
         shell.pack();
         shell.open();
-        while (!shell.isDisposed()) {
-            if (!display.readAndDispatch()) {
-                display.sleep();
-            }
-        }
     }
 
     private void newColorSelectPanel(Shell shell) {

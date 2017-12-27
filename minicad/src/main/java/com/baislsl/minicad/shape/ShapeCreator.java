@@ -38,10 +38,14 @@ public class ShapeCreator implements Shape {
         public void mouseUp(MouseEvent e) {
             log.info("mouseUp at ({}, {})", e.x, e.y);
             inDrag = false;
+            x2 = e.x;
+            y2 = e.y;
 
             if (currentShape != null) drawBoard.removeShape(currentShape);
-            drawBoard.addShape(currentShape);
-            drawBoard.redraw();
+            if ((currentShape = generateShape()) != null) {
+                drawBoard.addShape(currentShape);
+                drawBoard.redraw();
+            }
 
             uninstall(drawBoard);
         }
@@ -53,9 +57,10 @@ public class ShapeCreator implements Shape {
         x2 = e.x;
         y2 = e.y;
         if (currentShape != null) drawBoard.removeShape(currentShape);
-        currentShape = generateShape();
-        drawBoard.addShape(currentShape);
-        drawBoard.redraw();
+        if ((currentShape = generateShape()) != null) {
+            drawBoard.addShape(currentShape);
+            drawBoard.redraw();
+        }
     };
 
     public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard) {
@@ -64,6 +69,7 @@ public class ShapeCreator implements Shape {
     }
 
     private Shape generateShape() {
+        if (x1 == x2 && y1 == y2) return null;
         switch (this.shapeType) {
             case LINE:
                 return new LineShape(drawBoard, x1, y1, x2, y2);
