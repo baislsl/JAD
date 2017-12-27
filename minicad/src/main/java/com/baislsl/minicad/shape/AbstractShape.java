@@ -25,7 +25,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
     protected final static int MIN_WIDTH = 1;
     protected final static int MAX_WIDTH = 10;
     protected final static int WIDTH_INCREMENT = 1;
-    protected final static double GAP = 2;
+    protected final static double GAP = 4;
     protected boolean selected;
     protected Point dragBeginPoint;
     protected Point currentPoint;
@@ -98,6 +98,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         dragBeginPoint = null;
         currentPoint = null;
         this.width -= SELECT_WIDTH_INCREMENT;
+        uninstall(canvas);
         redraw();
     }
 

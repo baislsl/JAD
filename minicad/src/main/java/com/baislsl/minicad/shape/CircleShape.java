@@ -1,6 +1,7 @@
 package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
+import com.baislsl.minicad.util.Util2D;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -23,8 +24,8 @@ public class CircleShape extends AbstractShape {
                 x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
         gc.setForeground(color);
         gc.setLineWidth(width);
-        int r = Math.min(x2 - x1, y2 - y1);
-        gc.drawOval(x1, y1, r, r);
+        int r2 = Math.min(x2 - x1, y2 - y1);
+        gc.drawOval(Math.min(x1, x2), Math.min(y1, y2), r2, r2);
     }
 
     @Override
@@ -36,7 +37,11 @@ public class CircleShape extends AbstractShape {
 
     @Override
     public boolean intersects(Point p) {
-        // TODO:
-        return getBounds().contains(p);
+        int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
+                x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
+        double r = Math.min(x2 - x1, y2 - y1) / 2.0;
+
+        return Util2D.circleIntersect(Math.min(x2 - x1, y2 - y1) / 2,
+                Math.min(x1, x2) + r, Math.min(y1, y2) + r, p.x, p.y, GAP);
     }
 }

@@ -1,6 +1,7 @@
 package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
+import com.baislsl.minicad.util.Util2D;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -35,7 +36,10 @@ public class OvalShape extends AbstractShape {
 
     @Override
     public boolean intersects(Point p) {
-        // TODO:
-        return getBounds().contains(p);
+        int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
+                x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
+
+        return Util2D.ovalIntersect(Math.abs(x1 - x2) / 2.0, Math.abs(y1 - y2) / 2.0,
+                (x1 + x2) / 2.0, (y1 + y2) / 2.0, p.x, p.y, GAP);
     }
 }

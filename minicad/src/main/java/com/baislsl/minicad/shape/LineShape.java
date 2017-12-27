@@ -43,8 +43,9 @@ public class LineShape extends AbstractShape {
 
     @Override
     public boolean intersects(Point p) {
-        // TODO:
-        return getBounds().contains(p);
+        int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
+                x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
+        return Util2D.lineIntersect(x1, y1, x2, y2, p.x, p.y, GAP);
     }
 }
 

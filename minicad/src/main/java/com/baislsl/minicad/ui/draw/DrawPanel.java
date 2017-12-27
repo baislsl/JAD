@@ -10,6 +10,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
@@ -38,9 +39,11 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
                 Shape shape = fetchShape(e.x, e.y);
                 if (shape == null) return;
                 shapeList.remove(shape);
+                redraw();
             } else {    // MODIFY
-                // TODO: select the chosen shape form shape lists
-                shapeList.get(0).install(DrawPanel.this);
+                Shape shape = fetchShape(e.x, e.y);
+                if(shape != null)
+                    shape.install(DrawPanel.this);
             }
         }
     };
@@ -77,8 +80,12 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
     }
 
     private Shape fetchShape(int x, int y) {
-        // TODO search for shape
-        throw new RuntimeException("TODO: fetch shape");
+        // TODO: use 多进程
+        for (Shape shape : shapeList) {
+            if (shape.intersects(new Point(x, y)))
+                return shape;
+        }
+        return null;
     }
 
     @Override
