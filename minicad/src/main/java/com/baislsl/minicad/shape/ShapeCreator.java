@@ -77,7 +77,7 @@ public class ShapeCreator implements Shape {
             case CIRCLE:
                 return new CircleShape(drawBoard, x1, y1, x2, y2);
             case OVAL:
-                return new CovalShape(drawBoard, x1, y1, x2, y2);
+                return new OvalShape(drawBoard, x1, y1, x2, y2);
             default:
                 throw new RuntimeException("TODO:");
         }

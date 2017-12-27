@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CircleShape extends AbstractShape {
-    private final static Logger log = LoggerFactory.getLogger(CovalShape.class);
+    private final static Logger log = LoggerFactory.getLogger(CircleShape.class);
 
     CircleShape(DrawBoard canvas, int x1, int y1, int x2, int y2) {
         super(canvas);

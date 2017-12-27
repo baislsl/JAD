@@ -7,10 +7,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CovalShape extends AbstractShape {
-    private final static Logger log = LoggerFactory.getLogger(CovalShape.class);
+public class OvalShape extends AbstractShape {
+    private final static Logger log = LoggerFactory.getLogger(OvalShape.class);
 
-    CovalShape(DrawBoard canvas, int x1, int y1, int x2, int y2) {
+    OvalShape(DrawBoard canvas, int x1, int y1, int x2, int y2) {
         super(canvas);
         featurePoints.add(new Point(x1, y1));
         featurePoints.add(new Point(x2, y2));
