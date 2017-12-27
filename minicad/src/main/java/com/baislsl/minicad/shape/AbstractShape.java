@@ -3,9 +3,9 @@ package com.baislsl.minicad.shape;
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,13 +13,18 @@ import org.eclipse.swt.widgets.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AbstractShape implements Shape {
+abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
     private final static int DEFAULT_COLOR = SWT.COLOR_BLUE;
     private final static int DEFAULT_WIDTH = 2;
+    private final static int SELECT_WIDTH_INCREMENT = 1;
+
     protected final static int MIN_WIDTH = 1;
     protected final static int MAX_WIDTH = 10;
     protected final static int WIDTH_INCREMENT = 1;
+    protected final static double GAP = 2;
+    protected boolean selected;
+    protected Point dragBeginPoint;
 
     protected Color color;
     protected int width;
@@ -54,6 +59,48 @@ abstract class AbstractShape implements Shape {
     @Override
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    @Override
+    public void mouseDoubleClick(MouseEvent e) {
+        log.info(e.toString());
+        onOpenSettingPanel();
+    }
+
+    @Override
+    public void mouseDown(MouseEvent e) {
+        log.info(e.toString());
+        selected = true;
+        dragBeginPoint = new Point(e.x, e.y);
+        this.width += SELECT_WIDTH_INCREMENT;
+        redraw();
+    }
+
+
+    @Override
+    public void mouseUp(MouseEvent e) {
+        log.info(e.toString());
+        selected = false;
+        dragBeginPoint = null;
+        this.width -= SELECT_WIDTH_INCREMENT;
+        redraw();
+    }
+
+    @Override
+    public void mouseMove(MouseEvent e) {
+        dragBeginPoint = new Point(e.x, e.y);
+        // log.info("mouseMove at ({}, {})", e.x, e.y);
+        redraw();
+    }
+
+    @Override
+    public MouseMoveListener getMouseMoveListener() {
+        return this;
+    }
+
+    @Override
+    public MouseListener getMouseListener() {
+        return this;
     }
 
     protected void onOpenSettingPanel() {
