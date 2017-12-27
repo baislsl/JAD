@@ -48,11 +48,7 @@ public class Util2D {
     private static double pointToLine(double px, double py, double x1, double y1,
                                       double x2, double y2) {
         if (x1 == x2) { // ensure x1 != x2
-            return pointToLine(py, px, y1, x1, y2, x2);
-        }
-
-        if (y1 == y2) {
-            return Integer.MAX_VALUE;
+            return y1 == y2 ? Integer.MAX_VALUE : pointToLine(py, px, y1, x1, y2, x2);
         }
 
         // Ax + By + C = 0
