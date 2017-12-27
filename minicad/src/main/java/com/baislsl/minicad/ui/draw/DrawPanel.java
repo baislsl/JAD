@@ -34,10 +34,13 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
             if (currentMode == Mode.CREATE) {
                 ShapeCreator creator = new ShapeCreator(currentShapeType, DrawPanel.this);
                 creator.install(DrawPanel.this);
-            } else {    // DELETE
+            } else if (currentMode == Mode.DELETE) {    // DELETE
                 Shape shape = fetchShape(e.x, e.y);
                 if (shape == null) return;
                 shapeList.remove(shape);
+            } else {    // MODIFY
+                // TODO: select the chosen shape form shape lists
+                shapeList.get(0).install(DrawPanel.this);
             }
         }
     };

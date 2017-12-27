@@ -20,13 +20,12 @@ public class LineShape extends AbstractShape {
         @Override
         public void mouseDoubleClick(MouseEvent e) {
             log.info("mouseDoubleClick at ({}, {})", e.x, e.y);
+            onOpenSettingPanel();
         }
 
         @Override
         public void mouseDown(MouseEvent e) {
             log.info("mouseDown at ({}, {})", e.x, e.y);
-            x1 = e.x;
-            y1 = e.y;
             inDrag = true;
         }
 
@@ -40,7 +39,7 @@ public class LineShape extends AbstractShape {
     private MouseMoveListener mouseMoveListener = new MouseMoveListener() {
         @Override
         public void mouseMove(MouseEvent e) {
-            log.info("mouseMove at ({}, {})", e.x, e.y);
+            // log.info("mouseMove at ({}, {})", e.x, e.y);
             if (inDrag) {
                 x2 = e.x;
                 y2 = e.y;
