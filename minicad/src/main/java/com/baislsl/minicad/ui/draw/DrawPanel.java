@@ -1,10 +1,9 @@
 package com.baislsl.minicad.ui.draw;
 
-import com.baislsl.minicad.shape.LineShape;
 import com.baislsl.minicad.shape.Shape;
 import com.baislsl.minicad.shape.ShapeCreator;
 import com.baislsl.minicad.util.Mode;
-import com.baislsl.minicad.util.ShapeType;
+import com.baislsl.minicad.shape.ShapeType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;

@@ -2,7 +2,7 @@ package com.baislsl.minicad.ui.control;
 
 import com.baislsl.minicad.ui.draw.MessageReceiver;
 import com.baislsl.minicad.util.Mode;
-import com.baislsl.minicad.util.ShapeType;
+import com.baislsl.minicad.shape.ShapeType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

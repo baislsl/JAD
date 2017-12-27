@@ -2,7 +2,6 @@ package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
-import com.baislsl.minicad.util.ShapeType;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -66,20 +65,10 @@ public class ShapeCreator implements Shape {
     }
 
     private Shape generateShape() {
-        if (x1 == x2 && y1 == y2) return null;
-        switch (this.shapeType) {
-            case LINE:
-                return new LineShape(drawBoard, x1, y1, x2, y2);
-            case TEXT:
-                return new TextShape(drawBoard, x1, y1, x2, y2);
-            case RECTANGLE:
-                return new RectangleShape(drawBoard, x1, y1, x2, y2);
-            case CIRCLE:
-                return new CircleShape(drawBoard, x1, y1, x2, y2);
-            case OVAL:
-                return new OvalShape(drawBoard, x1, y1, x2, y2);
-            default:
-                throw new RuntimeException("TODO:");
+        if (x1 == x2 && y1 == y2) {
+            return null;
+        } else {
+            return shapeType.newShapeInstance(drawBoard, x1, y1, x2, y2);
         }
     }
 

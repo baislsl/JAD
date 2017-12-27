@@ -1,7 +1,7 @@
 package com.baislsl.minicad.ui.draw;
 
 import com.baislsl.minicad.util.Mode;
-import com.baislsl.minicad.util.ShapeType;
+import com.baislsl.minicad.shape.ShapeType;
 
 public interface MessageReceiver {
 
