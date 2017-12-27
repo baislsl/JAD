@@ -11,11 +11,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class ShapeCreator implements Shape {
     private final static Logger log = LoggerFactory.getLogger(ShapeCreator.class);
@@ -73,6 +70,14 @@ public class ShapeCreator implements Shape {
         switch (this.shapeType) {
             case LINE:
                 return new LineShape(drawBoard, x1, y1, x2, y2);
+            case TEXT:
+                return new TextShape(drawBoard, x1, y1, x2, y2);
+            case RECTANGLE:
+                return new RectangleShape(drawBoard, x1, y1, x2, y2);
+            case CIRCLE:
+                return new CircleShape(drawBoard, x1, y1, x2, y2);
+            case OVAL:
+                return new CovalShape(drawBoard, x1, y1, x2, y2);
             default:
                 throw new RuntimeException("TODO:");
         }
