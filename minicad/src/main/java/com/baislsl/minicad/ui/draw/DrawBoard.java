@@ -7,6 +7,8 @@ public interface DrawBoard {
 
     void redraw();
 
+    void setUpMouseListener();
+
     Canvas getCanvas();
 
     void addShape(Shape shape);

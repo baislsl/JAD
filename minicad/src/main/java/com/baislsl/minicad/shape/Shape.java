@@ -1,5 +1,6 @@
 package com.baislsl.minicad.shape;
 
+import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Mode;
 import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MouseListener;
@@ -33,10 +34,14 @@ public interface Shape {
         return getBounds().contains(p);
     }
 
-    default void install(Canvas c) {
-        c.addMouseListener(getMouseListener());
-        c.addMouseMoveListener(getMouseMoveListener());
+    default void install(DrawBoard c) {
+        c.getCanvas().addMouseListener(getMouseListener());
+        c.getCanvas().addMouseMoveListener(getMouseMoveListener());
     }
 
-    void uninstall(Canvas c);
+    default void uninstall(DrawBoard c){
+        c.getCanvas().removeMouseMoveListener(getMouseMoveListener());
+        c.getCanvas().removeMouseMoveListener(getMouseMoveListener());
+        c.setUpMouseListener();
+    }
 }

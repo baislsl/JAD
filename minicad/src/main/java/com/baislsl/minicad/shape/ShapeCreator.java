@@ -24,7 +24,6 @@ public class ShapeCreator implements Shape {
     private ShapeType shapeType;
     private DrawBoard drawBoard;
     private Shape currentShape;
-    private MouseListener preMouseListener;
 
     private MouseListener mouseListener = new MouseAdapter() {
         @Override
@@ -44,7 +43,7 @@ public class ShapeCreator implements Shape {
             drawBoard.addShape(currentShape);
             drawBoard.redraw();
 
-            uninstall(drawBoard.getCanvas());
+            uninstall(drawBoard);
         }
     };
 
@@ -59,10 +58,9 @@ public class ShapeCreator implements Shape {
         drawBoard.redraw();
     };
 
-    public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard, MouseListener preMouseListener) {
+    public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard) {
         this.shapeType = shapeType;
         this.drawBoard = drawBoard;
-        this.preMouseListener = preMouseListener;
     }
 
     private Shape generateShape() {
@@ -114,12 +112,5 @@ public class ShapeCreator implements Shape {
     @Override
     public boolean intersects(Point p) {
         throw new RuntimeException("Shape creator should not have intersects method");
-    }
-
-    @Override
-    public void uninstall(Canvas c) {
-        c.removeMouseListener(mouseListener);
-        c.removeMouseMoveListener(mouseMoveListener);
-        c.addMouseListener(preMouseListener);
     }
 }
