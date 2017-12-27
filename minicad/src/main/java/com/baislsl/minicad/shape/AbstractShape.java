@@ -165,7 +165,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         shell.open();
     }
 
-    private void newColorSelectPanel(Shell shell) {
+    protected void newColorSelectPanel(Shell shell) {
         // Use a label full of spaces to show the color
         final Label colorLabel = new Label(shell, SWT.NONE);
         colorLabel.setText("                       ");
@@ -195,7 +195,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         });
     }
 
-    private void newWidthSelectPanel(Shell shell) {
+    protected void newWidthSelectPanel(Shell shell) {
         final Label colorLabel = new Label(shell, SWT.NONE);
         colorLabel.setText("width");
 
