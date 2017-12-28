@@ -117,8 +117,6 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         }
         redraw();
 
-        // update drag point
-        dragBeginPoint = new Point(e.x, e.y);
 
     }
 
@@ -131,12 +129,12 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
                 gc.drawRectangle(rectangle);
             }
 
-            for (Point p : featurePoints) {
-                if (p != currentPoint) {
-                    gc.setLineWidth(2);
-                    gc.drawOval(p.x - 1, p.y - 1, 2, 2);
-                }
-            }
+            featurePoints.stream()
+                    .filter(p -> p != currentPoint)
+                    .forEach(p -> {
+                        gc.setLineWidth(2);
+                        gc.drawOval(p.x - 1, p.y - 1, 2, 2);
+                    });
         }
 
         if (currentPoint != null) {
@@ -215,4 +213,16 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         spinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
     }
 
+    @Override
+    public Rectangle getBounds() {
+        Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        featurePoints.forEach(p -> {
+            min.x = Math.min(min.x, p.x);
+            min.y = Math.min(min.y, p.y);
+            max.x = Math.max(max.x, p.x);
+            max.y = Math.max(max.y, p.y);
+        });
+        return new Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
+    }
 }

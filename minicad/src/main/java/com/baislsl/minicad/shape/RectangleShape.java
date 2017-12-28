@@ -76,19 +76,6 @@ public class RectangleShape extends AbstractShape {
     }
 
     @Override
-    public Rectangle getBounds() {
-        Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        featurePoints.forEach(p -> {
-            min.x = Math.min(min.x, p.x);
-            min.y = Math.min(min.y, p.y);
-            max.x = Math.max(max.x, p.x);
-            max.y = Math.max(max.y, p.y);
-        });
-        return new Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
-    }
-
-    @Override
     public boolean intersects(Point p) {
         int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
                 x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;

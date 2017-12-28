@@ -36,11 +36,9 @@ public class Util2D {
     public static boolean ovalIntersect(double rx, double ry, double ox, double oy,
                                         double px, double py, double gap) {
         // 以(ox, oy)为中心伸缩变换为圆
-        double rate = ry / rx;
-        ox = (ox - rx) * rate + rx;
-        px = (px - rx) * rate + rx;
-
-        return circleIntersect(ry, ox, oy, px, py, gap);
+        double rate = rx / ry;
+        py = (py - oy) * rate + oy;
+        return circleIntersect(rx, ox, oy, px, py, gap);
     }
 
     public static boolean circleIntersect(double r, double ox, double oy,
