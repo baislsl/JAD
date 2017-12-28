@@ -2,7 +2,12 @@ package com.baislsl.minicad.util;
 
 
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.pow;
 
 public class Util2D {
     public static double distance(Point p1, Point p2) {
@@ -10,22 +15,22 @@ public class Util2D {
     }
 
     public static double distance(double x1, double y1, double x2, double y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
     }
 
     public static boolean lineIntersect(double x1, double y1, double x2, double y2,
                                         double px, double py, double gap) {
-        return px > Math.min(x1, x2) - gap
-                && px < Math.max(x1, x2) + gap
-                && py > Math.min(y1, y2) - gap
-                && py < Math.max(y1, y2) + gap
+        return px > min(x1, x2) - gap
+                && px < max(x1, x2) + gap
+                && py > min(y1, y2) - gap
+                && py < max(y1, y2) + gap
                 && pointToLine(px, py, x1, y1, x2, y2) < gap;
     }
 
     public static boolean rectangleIntersect(double x1, double y1, double x2, double y2,
                                              double px, double py, double gap) {
-        return (Math.abs(px - x1) < gap || Math.abs(px - x2) < gap)
-                && (Math.abs(py - y1) < gap || Math.abs(py - y2) < gap);
+        return ((abs(px - x1) < gap || abs(px - x2) < gap) && (min(y1, y2) < py && max(y1, y2) > py))
+                || ((abs(py - y1) < gap || abs(py - y2) < gap) && (min(x1, x2) < px && max(x1, x2) > py));
     }
 
     public static boolean ovalIntersect(double rx, double ry, double ox, double oy,
@@ -34,15 +39,14 @@ public class Util2D {
         double rate = ry / rx;
         ox = (ox - rx) * rate + rx;
         px = (px - rx) * rate + rx;
-        gap = gap * rate;
 
-        return circleIntersect(rx, ox, oy, px, py, gap);
+        return circleIntersect(ry, ox, oy, px, py, gap);
     }
 
     public static boolean circleIntersect(double r, double ox, double oy,
                                           double px, double py, double gap) {
         double dis = distance(ox, oy, px, py);
-        return Math.abs(dis - r) < gap;
+        return abs(dis - r) < gap;
     }
 
     private static double pointToLine(double px, double py, double x1, double y1,
@@ -54,7 +58,7 @@ public class Util2D {
         // Ax + By + C = 0
         double B = 1.0, A = -(y1 - y2) / (x1 - x2), C = -A * x1 - B * y1;
 
-        return Math.abs(A * px + B * py + C) / Math.sqrt(A * A + B * B);
+        return abs(A * px + B * py + C) / sqrt(A * A + B * B);
     }
 
 

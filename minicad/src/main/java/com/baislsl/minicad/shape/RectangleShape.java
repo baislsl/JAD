@@ -24,10 +24,38 @@ public class RectangleShape extends AbstractShape {
     public void mouseMove(MouseEvent e) {
         if (currentPoint != null) { // resize rectangle
             int x = currentPoint.x, y = currentPoint.y;
-            featurePoints.forEach(p -> {
-                if (p.x == x) p.x = e.x;
-                if (p.y == y) p.y = e.y;
-            });
+            boolean xAllEqual = true, yAllEqual = true;
+            for (Point p : featurePoints) {
+                xAllEqual &= (p.x == x);
+                yAllEqual &= (p.y == y);
+            }
+            if (xAllEqual || yAllEqual) { // rectangle on one line
+                Point p11 = currentPoint, p12 = null, p21 = null, p22 = null;
+                for (Point p : featurePoints) {
+                    if (p.x == p11.x && p.y == p11.y) {
+                        p12 = p11;
+                        break;
+                    }
+                }
+                for (Point p : featurePoints) {
+                    if (p != p11 && p != p12) {
+                        if (p21 == null) p21 = p;
+                        else p22 = p;
+                    }
+                }
+                // p11 和 p12 重合， p21 和 p22 重合
+                p11.x = e.x;
+                p11.y = e.y;
+                if (p21.x == p12.x) p21.x = e.x;
+                else p21.y = e.y;
+
+
+            } else {
+                featurePoints.forEach(p -> {
+                    if (p.x == x) p.x = e.x;
+                    if (p.y == y) p.y = e.y;
+                });
+            }
         } else if (selected) {
             int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
             featurePoints.forEach(p -> {
@@ -42,18 +70,22 @@ public class RectangleShape extends AbstractShape {
     @Override
     public void render(GC gc) {
         super.render(gc);
-        int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
-                x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
         gc.setForeground(color);
         gc.setLineWidth(width);
-        gc.drawRectangle(x1, y1, x2 - x1, y2 - y1);
+        gc.drawRectangle(getBounds());
     }
 
     @Override
     public Rectangle getBounds() {
-        int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
-                x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
-        return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+        Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        featurePoints.forEach(p -> {
+            min.x = Math.min(min.x, p.x);
+            min.y = Math.min(min.y, p.y);
+            max.x = Math.max(max.x, p.x);
+            max.y = Math.max(max.y, p.y);
+        });
+        return new Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
     }
 
     @Override
