@@ -110,10 +110,10 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
             currentPoint.y = e.y;
         } else if (selected) {    // drag
             int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
-            for (Point p : featurePoints) {
+            featurePoints.forEach(p -> {
                 p.x += dx;
                 p.y += dy;
-            }
+            });
         }
         redraw();
 

@@ -2,6 +2,7 @@ package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import com.baislsl.minicad.util.Util2D;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -15,6 +16,27 @@ public class RectangleShape extends AbstractShape {
         super(canvas);
         featurePoints.add(new Point(x1, y1));
         featurePoints.add(new Point(x2, y2));
+        featurePoints.add(new Point(x1, y2));   // enable drag of rectangle on all vertex
+        featurePoints.add(new Point(x2, y1));
+    }
+
+    @Override
+    public void mouseMove(MouseEvent e) {
+        if (currentPoint != null) { // resize rectangle
+            int x = currentPoint.x, y = currentPoint.y;
+            featurePoints.forEach(p -> {
+                if (p.x == x) p.x = e.x;
+                if (p.y == y) p.y = e.y;
+            });
+        } else if (selected) {
+            int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
+            featurePoints.forEach(p -> {
+                p.x += dx;
+                p.y += dy;
+            });
+        }
+        redraw();
+        dragBeginPoint = new Point(e.x, e.y);
     }
 
     @Override
