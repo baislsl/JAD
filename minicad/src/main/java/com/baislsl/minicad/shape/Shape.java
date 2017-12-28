@@ -40,7 +40,7 @@ public interface Shape {
     }
 
     default void uninstall(DrawBoard c){
-        c.getCanvas().removeMouseMoveListener(getMouseMoveListener());
+        c.getCanvas().removeMouseListener(getMouseListener());
         c.getCanvas().removeMouseMoveListener(getMouseMoveListener());
         c.setUpMouseListener();
     }

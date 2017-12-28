@@ -75,7 +75,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
 
     @Override
     public void mouseDown(MouseEvent e) {
-        log.info(e.toString());
+        log.info("mouse down: {}", e.toString());
         selected = true;
         Point cur = new Point(e.x, e.y);
         dragBeginPoint = cur;
@@ -86,14 +86,14 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
                     return distance > 0 ? 1 : (distance < 0 ? -1 : 0);
                 }).filter(p -> Util2D.distance(p, cur) < GAP)
                 .orElse(null);
-
+        log.info("current point is {}", currentPoint == null ? "null" : currentPoint.toString());
         redraw();
     }
 
 
     @Override
     public void mouseUp(MouseEvent e) {
-        log.info(e.toString());
+        log.info("mouseUp: {}", e.toString());
         selected = false;
         dragBeginPoint = null;
         currentPoint = null;
