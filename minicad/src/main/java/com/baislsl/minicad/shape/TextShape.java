@@ -2,8 +2,6 @@ package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
@@ -32,7 +30,7 @@ public class TextShape extends AbstractShape {
     }
 
     private void onOpenTextPanel() {
-        Display display = canvas.getCanvas().getDisplay();
+        Display display = drawBoard.getCanvas().getDisplay();
         Shell shell = new Shell(display);
         shell.setLayout(new GridLayout(2, true));
 
@@ -67,7 +65,7 @@ public class TextShape extends AbstractShape {
         double rate = Math.abs(y2 - y1) / textSize.y;
         fontData.setHeight((int) (rate * textSize.y));
         fontData.setHeight(Math.abs(y2 - y1));
-        gc.setFont(new Font(canvas.getCanvas().getDisplay(), fontData));
+        gc.setFont(new Font(drawBoard.getCanvas().getDisplay(), fontData));
         gc.drawText(text, Math.min(x1, x2), Math.min(y1, y2) - 10, true);
     }
 

@@ -1,7 +1,6 @@
 package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
-import com.baislsl.minicad.util.Mode;
 import com.baislsl.minicad.util.Util2D;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
@@ -20,6 +19,7 @@ import java.util.List;
 abstract class AbstractShape implements Shape {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
     private final static int DEFAULT_COLOR = SWT.COLOR_BLUE;
+    private final static int FEATURE_POINT_SELECTED_COLOR = SWT.COLOR_RED;
     private final static int DEFAULT_WIDTH = 2;
     private final static int SELECT_WIDTH_INCREMENT = 1;
 
@@ -35,25 +35,25 @@ abstract class AbstractShape implements Shape {
 
     protected Color color;
     protected int width;
-    protected DrawBoard canvas;
+    protected DrawBoard drawBoard;
 
-    AbstractShape(DrawBoard canvas) {
-        this(canvas, canvas.getCanvas().getDisplay().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
+    AbstractShape(DrawBoard drawBoard) {
+        this(drawBoard, drawBoard.getCanvas().getDisplay().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
     }
 
-    AbstractShape(DrawBoard canvas, Color color, int width) {
-        this.canvas = canvas;
+    AbstractShape(DrawBoard drawBoard, Color color, int width) {
+        this.drawBoard = drawBoard;
         setColor(color);
         this.width = width;
     }
 
     public void redraw() {
-        canvas.redraw();
+        drawBoard.redraw();
     }
 
     @Override
     public void setColor(Color color) {
-        this.color = new Color(canvas.getCanvas().getDisplay(), color.getRGB());
+        this.color = new Color(drawBoard.getCanvas().getDisplay(), color.getRGB());
     }
 
     @Override
@@ -80,7 +80,7 @@ abstract class AbstractShape implements Shape {
                     return distance > 0 ? 1 : (distance < 0 ? -1 : 0);
                 }).filter(p -> Util2D.distance(p, cur) < GAP)
                 .orElse(null);
-        log.info("current point is {}", currentPoint == null ? "null" : currentPoint.toString());
+        log.info("current point is {}", currentPoint);
         redraw();
     }
 
@@ -92,7 +92,7 @@ abstract class AbstractShape implements Shape {
         dragBeginPoint = null;
         currentPoint = null;
         this.width -= SELECT_WIDTH_INCREMENT;
-        uninstall(canvas);
+        uninstall(drawBoard);
         redraw();
     }
 
@@ -117,28 +117,32 @@ abstract class AbstractShape implements Shape {
 
     @Override
     public void render(GC gc) {
+        gc.setLineWidth(1);
         if (selected) {
             Rectangle rectangle = getBounds();
             if (rectangle != null) {
-                gc.setLineWidth(1);
                 gc.drawRectangle(rectangle);
             }
 
+            Color fg = drawBoard.getCanvas().getDisplay().getSystemColor(FEATURE_POINT_SELECTED_COLOR);
+            Color bg = gc.getBackground();
             featurePoints.stream()
                     .filter(p -> p != currentPoint)
                     .forEach(p -> {
-                        gc.setLineWidth(2);
-                        gc.drawOval(p.x - 1, p.y - 1, 2, 2);
+                        gc.setForeground(bg);
+                        gc.fillOval(p.x - 3, p.y - 3, 6, 6);
+                        gc.setForeground(fg);
+                        gc.drawOval(p.x - 3, p.y - 3, 6, 6);
                     });
         }
 
         if (currentPoint != null) {
-            gc.drawOval(currentPoint.x - 2, currentPoint.y - 2, 4, 4);
+            gc.drawOval(currentPoint.x - 3, currentPoint.y - 3, 6, 6);
         }
     }
 
     protected void onOpenSettingPanel() {
-        Display display = canvas.getCanvas().getDisplay();
+        Display display = drawBoard.getCanvas().getDisplay();
         Shell shell = new Shell(display);
         shell.setLayout(new GridLayout(2, true));
 
@@ -242,7 +246,7 @@ abstract class AbstractShape implements Shape {
         String name = (String) object.get("name");
         assert name.equals(this.getClass().getSimpleName());
 
-        this.canvas = drawBoard;
+        this.drawBoard = drawBoard;
 
         this.width = Math.toIntExact((long) object.get("width"));
 
