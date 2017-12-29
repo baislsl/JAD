@@ -43,6 +43,8 @@ public class MainFrame {
             // should be impossible to happen
             log.error("error open property file. ", e);
         }
+        shell.setText(props.getProperty("title"));
+
         setUpMenu();
     }
 
