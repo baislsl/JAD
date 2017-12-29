@@ -1,49 +1,39 @@
 package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
+import com.baislsl.minicad.ui.draw.DrawPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Constructor;
 
 public enum ShapeType {
-    LINE(LineShape.class) {
-        @Override
-        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
-            return new LineShape(drawBoard, x1, y1, x2, y2);
-        }
-    },
-    RECTANGLE(RectangleShape.class) {
-        @Override
-        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
-            return new RectangleShape(drawBoard, x1, y1, x2, y2);
-        }
-    },
-    TEXT(TextShape.class) {
-        @Override
-        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
-            return new TextShape(drawBoard, x1, y1, x2, y2);
-        }
-    },
-    CIRCLE(CircleShape.class) {
-        @Override
-        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
-            return new CircleShape(drawBoard, x1, y1, x2, y2);
-        }
-    },
-    OVAL(OvalShape.class) {
-        @Override
-        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
-            return new OvalShape(drawBoard, x1, y1, x2, y2);
-        }
-    };
+    LINE(LineShape.class),
+    RECTANGLE(RectangleShape.class),
+    TEXT(TextShape.class),
+    CIRCLE(CircleShape.class),
+    OVAL(OvalShape.class);
 
-    private Class<?> clazz;
+    private final static Logger log = LoggerFactory.getLogger(ShapeType.class);
+    private Class<?> shapeClazz;
 
-    ShapeType(Class<?> clazz) {
-        this.clazz = clazz;
+    ShapeType(Class<?> shapeClazz) {
+        this.shapeClazz = shapeClazz;
     }
 
-    public Class<?> getClazz() {
-        return clazz;
+    public Class<?> getShapeClazz() {
+        return shapeClazz;
     }
 
-    public abstract Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2);
+    public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        try {
+            return (Shape) this.shapeClazz.asSubclass(shapeClazz)
+                    .getDeclaredConstructor(DrawBoard.class, int.class, int.class, int.class, int.class)
+                    .newInstance(drawBoard, x1, y1, x2, y2);
+        } catch (Exception e) {
+            log.error("error constructing new shape ", e);
+        }
+        return null;
+    }
 
 }
