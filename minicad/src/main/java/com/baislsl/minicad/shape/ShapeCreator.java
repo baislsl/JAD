@@ -22,44 +22,6 @@ public class ShapeCreator implements Shape {
     private DrawBoard drawBoard;
     private Shape currentShape;
 
-    private MouseListener mouseListener = new MouseAdapter() {
-        @Override
-        public void mouseDown(MouseEvent e) {
-            log.info("mouseDown at ({}, {})", e.x, e.y);
-            x1 = e.x;
-            y1 = e.y;
-            inDrag = true;
-        }
-
-        @Override
-        public void mouseUp(MouseEvent e) {
-            log.info("mouseUp at ({}, {})", e.x, e.y);
-            inDrag = false;
-            x2 = e.x;
-            y2 = e.y;
-
-            if (currentShape != null) drawBoard.removeShape(currentShape);
-            if ((currentShape = generateShape()) != null) {
-                drawBoard.addShape(currentShape);
-                drawBoard.redraw();
-            }
-
-            uninstall(drawBoard);
-        }
-    };
-
-    private MouseMoveListener mouseMoveListener = e -> {
-        // log.info("mouseMove at ({}, {})", e.x, e.y);
-        if (!inDrag) return;
-        x2 = e.x;
-        y2 = e.y;
-        if (currentShape != null) drawBoard.removeShape(currentShape);
-        if ((currentShape = generateShape()) != null) {
-            drawBoard.addShape(currentShape);
-            drawBoard.redraw();
-        }
-    };
-
     public ShapeCreator(ShapeType shapeType, DrawBoard drawBoard) {
         this.shapeType = shapeType;
         this.drawBoard = drawBoard;
@@ -74,6 +36,48 @@ public class ShapeCreator implements Shape {
     }
 
     @Override
+    public void mouseDoubleClick(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDown(MouseEvent e) {
+        log.info("mouseDown at ({}, {})", e.x, e.y);
+        x1 = e.x;
+        y1 = e.y;
+        inDrag = true;
+    }
+
+    @Override
+    public void mouseUp(MouseEvent e) {
+        log.info("mouseUp at ({}, {})", e.x, e.y);
+        inDrag = false;
+        x2 = e.x;
+        y2 = e.y;
+
+        if (currentShape != null) drawBoard.removeShape(currentShape);
+        if ((currentShape = generateShape()) != null) {
+            drawBoard.addShape(currentShape);
+            drawBoard.redraw();
+        }
+
+        uninstall(drawBoard);
+    }
+
+    @Override
+    public void mouseMove(MouseEvent e) {
+        // log.info("mouseMove at ({}, {})", e.x, e.y);
+        if (!inDrag) return;
+        x2 = e.x;
+        y2 = e.y;
+        if (currentShape != null) drawBoard.removeShape(currentShape);
+        if ((currentShape = generateShape()) != null) {
+            drawBoard.addShape(currentShape);
+            drawBoard.redraw();
+        }
+    }
+
+    @Override
     public void render(GC gc) {
 
     }
@@ -82,23 +86,6 @@ public class ShapeCreator implements Shape {
     public Rectangle getBounds() {
         throw new RuntimeException("Shape creator should not have get bounds method");
     }
-
-
-    @Override
-    public MouseListener getMouseListener() {
-        return mouseListener;
-    }
-
-    @Override
-    public MouseMoveListener getMouseMoveListener() {
-        return mouseMoveListener;
-    }
-
-    @Override
-    public void setMode(Mode mode) {
-
-    }
-
 
     @Override
     public void setColor(Color color) {

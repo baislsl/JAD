@@ -11,17 +11,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 
-public interface Shape extends JSONDumpable {
+public interface Shape extends JSONDumpable, MouseListener, MouseMoveListener {
 
     void render(GC gc);
 
     Rectangle getBounds();
-
-    MouseListener getMouseListener();
-
-    MouseMoveListener getMouseMoveListener();
-
-    void setMode(Mode mode);
 
     void setColor(Color color);
 
@@ -33,13 +27,13 @@ public interface Shape extends JSONDumpable {
     }
 
     default void install(DrawBoard c) {
-        c.getCanvas().addMouseListener(getMouseListener());
-        c.getCanvas().addMouseMoveListener(getMouseMoveListener());
+        c.getCanvas().addMouseListener(this);
+        c.getCanvas().addMouseMoveListener(this);
     }
 
     default void uninstall(DrawBoard c){
-        c.getCanvas().removeMouseListener(getMouseListener());
-        c.getCanvas().removeMouseMoveListener(getMouseMoveListener());
+        c.getCanvas().removeMouseListener(this);
+        c.getCanvas().removeMouseMoveListener(this);
         c.setUpMouseListener();
     }
 }

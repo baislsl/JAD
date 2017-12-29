@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener {
+abstract class AbstractShape implements Shape {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
     private final static int DEFAULT_COLOR = SWT.COLOR_BLUE;
     private final static int DEFAULT_WIDTH = 2;
@@ -35,7 +35,6 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
 
     protected Color color;
     protected int width;
-    protected Mode mode;
     protected DrawBoard canvas;
 
     AbstractShape(DrawBoard canvas) {
@@ -46,12 +45,6 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         this.canvas = canvas;
         setColor(color);
         this.width = width;
-    }
-
-    @Override
-    public void setMode(Mode mode) {
-        log.info("setMode {}", mode.name());
-        this.mode = mode;
     }
 
     public void redraw() {
@@ -142,16 +135,6 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
         if (currentPoint != null) {
             gc.drawOval(currentPoint.x - 2, currentPoint.y - 2, 4, 4);
         }
-    }
-
-    @Override
-    public MouseMoveListener getMouseMoveListener() {
-        return this;
-    }
-
-    @Override
-    public MouseListener getMouseListener() {
-        return this;
     }
 
     protected void onOpenSettingPanel() {
