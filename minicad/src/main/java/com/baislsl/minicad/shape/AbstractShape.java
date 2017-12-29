@@ -116,7 +116,8 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
             });
         }
         redraw();
-
+        dragBeginPoint.x = e.x;
+        dragBeginPoint.y = e.y;
 
     }
 

@@ -64,7 +64,8 @@ public class RectangleShape extends AbstractShape {
             });
         }
         redraw();
-        dragBeginPoint = new Point(e.x, e.y);
+        dragBeginPoint.x = e.x;
+        dragBeginPoint.y = e.y;
     }
 
     @Override

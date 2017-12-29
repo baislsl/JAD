@@ -50,8 +50,8 @@ public class CircleShape extends AbstractShape {
         redraw();
 
         // update drag point
-        dragBeginPoint = new Point(e.x, e.y);
-
+        dragBeginPoint.x = e.x;
+        dragBeginPoint.y = e.y;
     }
 
     @Override
