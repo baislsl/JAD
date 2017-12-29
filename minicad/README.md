@@ -1,21 +1,31 @@
-做一个简单的绘图工具，以CAD的方式操作，
-能放置直线、矩形、圆和文字，能选中图形，
-修改参数，如颜色等，能拖动图形和调整大小，
-可以保存和恢复。功能请参考视频演示。(25分)
-
-要求上传：
-
-源码；
-实验报告；
-可执行的jar文件。
-
-演示视频下载链接: https://pan.baidu.com/s/1dFaZ2Ml 密码: d3xg
+# MiniCAD
 
 
-## design
+## Build
 
-create, delete -> control panel
+这是一个使用maven构建的项目，关于maven使用可以参考[maven guides](https://maven.apache.org/guides/)
 
-color, width -> double click
+## 设计
 
-resize -> drag
+### 总体设计图
+
+
+
+### UI
+
+UI三方依赖: SWT
+
+UI部分比较简单，主要分为
+
+- 控制面板，控制当前状态和绘制图形
+- 绘画面板，绘制各种图形
+- 菜单，导入导出文件
+
+### 图形设计
+
+
+
+
+### 文件保存和导入
+
+使用com.googlecode.json-simple
