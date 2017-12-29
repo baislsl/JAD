@@ -102,7 +102,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.baislsl.spreadsheet.SpreadSheet</mainClass>
+                            <mainClass>com.baislsl.minicad.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
