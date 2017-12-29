@@ -32,7 +32,7 @@ public class TextShape extends AbstractShape {
     }
 
     private void onOpenTextPanel() {
-        Display display = Display.getCurrent();
+        Display display = canvas.getCanvas().getDisplay();
         Shell shell = new Shell(display);
         shell.setLayout(new GridLayout(2, true));
 
@@ -67,7 +67,7 @@ public class TextShape extends AbstractShape {
         double rate = Math.abs(y2 - y1) / textSize.y;
         fontData.setHeight((int) (rate * textSize.y));
         fontData.setHeight(Math.abs(y2 - y1));
-        gc.setFont(new Font(Display.getCurrent(), fontData));
+        gc.setFont(new Font(canvas.getCanvas().getDisplay(), fontData));
         gc.drawText(text, Math.min(x1, x2), Math.min(y1, y2) - 10, true);
     }
 

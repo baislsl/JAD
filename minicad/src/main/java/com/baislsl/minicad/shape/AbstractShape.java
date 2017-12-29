@@ -39,12 +39,12 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
     protected DrawBoard canvas;
 
     AbstractShape(DrawBoard canvas) {
-        this(canvas, Display.getCurrent().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
+        this(canvas, canvas.getCanvas().getDisplay().getSystemColor(DEFAULT_COLOR), DEFAULT_WIDTH);
     }
 
     AbstractShape(DrawBoard canvas, Color color, int width) {
         this.canvas = canvas;
-        this.color = color;
+        setColor(color);
         this.width = width;
     }
 
@@ -60,7 +60,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
 
     @Override
     public void setColor(Color color) {
-        this.color = color;
+        this.color = new Color(canvas.getCanvas().getDisplay(), color.getRGB());
     }
 
     @Override
@@ -155,7 +155,7 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
     }
 
     protected void onOpenSettingPanel() {
-        Display display = Display.getCurrent();
+        Display display = canvas.getCanvas().getDisplay();
         Shell shell = new Shell(display);
         shell.setLayout(new GridLayout(2, true));
 
