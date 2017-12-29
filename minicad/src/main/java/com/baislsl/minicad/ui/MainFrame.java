@@ -33,9 +33,9 @@ public class MainFrame {
         drawPanel = new DrawPanel(shell, SWT.NONE);
         controlPanel = new ControlPanel(shell, SWT.BORDER, drawPanel);
         jsonShapeManager = new JSONShapeManager(drawPanel);
-        drawPanel.setBounds(10, 10, 510, 510);
-        controlPanel.setBounds(520, 10, 100, 510);
-        shell.setSize(640, 560);
+        drawPanel.setBounds(10, 10, DrawPanel.CANVAS_WIDTH , DrawPanel.CANVAS_HEIGHT);
+        controlPanel.setBounds(DrawPanel.CANVAS_WIDTH + 10, 10, 100, DrawPanel.CANVAS_HEIGHT);
+        shell.setSize(DrawPanel.CANVAS_WIDTH + 140, DrawPanel.CANVAS_HEIGHT + 50);
         props = new Properties();
         try {
             props.load(MainFrame.class.getResourceAsStream(PROP_PATH));

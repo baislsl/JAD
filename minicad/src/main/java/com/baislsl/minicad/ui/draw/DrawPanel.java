@@ -9,6 +9,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +21,9 @@ import java.util.List;
 
 public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
     private final static Logger log = LoggerFactory.getLogger(DrawPanel.class);
-    private final static int CANVAS_SIZE = 500;
+    public final static int CANVAS_WIDTH = 636;
+    public final static int CANVAS_HEIGHT = 570;
+
     private Canvas canvas;
     private List<Shape> shapeList = new ArrayList<>();
     private ShapeType currentShapeType = ShapeType.LINE;
@@ -59,7 +62,9 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
             }
         });
         canvas.addMouseListener(defaultMouseAdapter);
-        canvas.setBounds(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        canvas.setBounds(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        Image image = new Image(getDisplay(), DrawPanel.class.getResourceAsStream("/background.png"));
+        canvas.setBackgroundImage(image);
     }
 
     @Override

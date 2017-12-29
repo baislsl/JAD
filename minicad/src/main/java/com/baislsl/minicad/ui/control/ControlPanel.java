@@ -22,14 +22,16 @@ public class ControlPanel extends Composite {
     }
 
     private void init() {
-        setLayout(new RowLayout());
+        RowLayout layout = new RowLayout();
+        layout.pack = false;
+        layout.marginLeft = layout.marginRight = 2;
+        setLayout(layout);
         for (Mode mode : Mode.values()) {
             addModeButton(mode.name(), mode);
         }
 
         //  separator
-        new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL );
-        new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL );
+        new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.FILL);
 
         for (ShapeType type : ShapeType.values()) {
             addShapeTypeButton(type.name(), type);
