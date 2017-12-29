@@ -6,9 +6,11 @@ import com.baislsl.minicad.shape.ShapeType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 public class ControlPanel extends Composite {
     private MessageReceiver receiver;
@@ -25,7 +27,9 @@ public class ControlPanel extends Composite {
             addModeButton(mode.name(), mode);
         }
 
-        // TODO: add a bar to split mode buttons and shape buttons
+        //  separator
+        new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL );
+        new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL );
 
         for (ShapeType type : ShapeType.values()) {
             addShapeTypeButton(type.name(), type);
@@ -51,6 +55,7 @@ public class ControlPanel extends Composite {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 super.widgetSelected(e);
+                receiver.setMode(Mode.CREATE);
                 receiver.setShapeType(type);
             }
         });
