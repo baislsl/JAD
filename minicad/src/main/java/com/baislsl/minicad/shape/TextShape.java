@@ -1,5 +1,6 @@
 package com.baislsl.minicad.shape;
 
+import com.baislsl.minicad.Main;
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -15,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class TextShape extends AbstractShape {
     private final static Logger log = LoggerFactory.getLogger(TextShape.class);
-    private String text = "input text";
+    private String text = "input_text";
 
     TextShape(DrawBoard canvas, int x1, int y1, int x2, int y2) {
         super(canvas);
@@ -27,6 +28,12 @@ public class TextShape extends AbstractShape {
     public void mouseDoubleClick(MouseEvent e) {
         log.info(e.toString());
         onOpenTextPanel();
+    }
+
+    @Override
+    protected void onFeaturePointDrag(MouseEvent e) {
+        currentPoint.x = e.x;
+        currentPoint.y = e.y;
     }
 
     private void onOpenTextPanel() {
@@ -55,18 +62,28 @@ public class TextShape extends AbstractShape {
     @Override
     public void render(GC gc) {
         super.render(gc);
+        gc.setForeground(color);
+        adjustToText(gc);
+        Rectangle r = getBounds();
+        gc.drawText(text, r.x, r.y, true);
+    }
+
+
+    private void adjustToText(GC gc) {
+        // TODO:
         int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
                 x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
-        gc.setForeground(color);
-
         Point textSize = gc.textExtent(text);
         FontData fontData = gc.getFont().getFontData()[0];
-        // double rate = Math.min(1.0 * Math.abs(x2 - x1) / textSize.x, 1.0 * Math.abs(y2 - y1) / textSize.y);
-        double rate = Math.abs(y2 - y1) / textSize.y;
-        fontData.setHeight((int) (rate * textSize.y));
+        double rate = 1.0 * Math.abs(y2 - y1) / textSize.y;
         fontData.setHeight(Math.abs(y2 - y1));
+
+        featurePoints.get(0).x = Math.min(x1, x2);
+        featurePoints.get(0).y = Math.min(y1, y2);
+        featurePoints.get(1).x = Math.min(x1, x2) + (int) (textSize.x * rate);
+        featurePoints.get(1).y = Math.min(y1, y2) + (int) (textSize.y * rate);
+
         gc.setFont(new Font(drawBoard.getCanvas().getDisplay(), fontData));
-        gc.drawText(text, Math.min(x1, x2), Math.min(y1, y2) - 10, true);
     }
 
     @Override

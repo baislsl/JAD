@@ -5,8 +5,6 @@ import com.baislsl.minicad.ui.draw.DrawPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-
 public enum ShapeType {
     LINE(LineShape.class),
     RECTANGLE(RectangleShape.class),

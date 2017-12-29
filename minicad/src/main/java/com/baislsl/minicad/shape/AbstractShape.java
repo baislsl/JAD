@@ -16,6 +16,15 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ *
+ * @see LineShape
+ * @see CircleShape
+ * @see OvalShape
+ * @see RectangleShape
+ * @see TextShape
+ */
 abstract class AbstractShape implements Shape {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
     private final static int DEFAULT_COLOR = SWT.COLOR_BLUE;
@@ -100,8 +109,7 @@ abstract class AbstractShape implements Shape {
     public void mouseMove(MouseEvent e) {
         // log.info("mouseMove at ({}, {})", e.x, e.y);
         if (currentPoint != null) { // resize advance drag
-            currentPoint.x = e.x;
-            currentPoint.y = e.y;
+            onFeaturePointDrag(e);
         } else if (selected) {    // drag
             int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
             featurePoints.forEach(p -> {
@@ -264,4 +272,10 @@ abstract class AbstractShape implements Shape {
             featurePoints.add(p);
         }
     }
+
+    /**
+     * 当一个特征点被拖动时触发
+     * @param e 光标
+     */
+    protected abstract void onFeaturePointDrag(MouseEvent e);
 }

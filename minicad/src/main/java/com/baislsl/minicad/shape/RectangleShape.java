@@ -9,6 +9,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public class RectangleShape extends AbstractShape {
     private final static Logger log = LoggerFactory.getLogger(RectangleShape.class);
 
@@ -21,51 +23,42 @@ public class RectangleShape extends AbstractShape {
     }
 
     @Override
-    public void mouseMove(MouseEvent e) {
-        if (currentPoint != null) { // resize rectangle
-            int x = currentPoint.x, y = currentPoint.y;
-            boolean xAllEqual = true, yAllEqual = true;
+    protected void onFeaturePointDrag(MouseEvent e) {
+        int x = currentPoint.x, y = currentPoint.y;
+        boolean xAllEqual = true, yAllEqual = true;
+        for (Point p : featurePoints) {
+            xAllEqual &= (p.x == x);
+            yAllEqual &= (p.y == y);
+        }
+        if (xAllEqual || yAllEqual) { // rectangle on one line
+            Point p11 = currentPoint, p12 = null, p21 = null, p22 = null;
             for (Point p : featurePoints) {
-                xAllEqual &= (p.x == x);
-                yAllEqual &= (p.y == y);
+                if (p.x == p11.x && p.y == p11.y) {
+                    p12 = p11;
+                    break;
+                }
             }
-            if (xAllEqual || yAllEqual) { // rectangle on one line
-                Point p11 = currentPoint, p12 = null, p21 = null, p22 = null;
-                for (Point p : featurePoints) {
-                    if (p.x == p11.x && p.y == p11.y) {
-                        p12 = p11;
-                        break;
-                    }
+            for (Point p : featurePoints) {
+                if (p != p11 && p != p12) {
+                    if (p21 == null) p21 = p;
+                    else p22 = p;
                 }
-                for (Point p : featurePoints) {
-                    if (p != p11 && p != p12) {
-                        if (p21 == null) p21 = p;
-                        else p22 = p;
-                    }
-                }
-                // p11 和 p12 重合， p21 和 p22 重合
-                p11.x = e.x;
-                p11.y = e.y;
-                if (p21.x == p12.x) p21.x = e.x;
-                else p21.y = e.y;
+            }
+            // p11 和 p12 重合， p21 和 p22 重合
+            p11.x = e.x;
+            p11.y = e.y;
+            Objects.requireNonNull(p21);
+            Objects.requireNonNull(p12);
+            if (p21.x == p12.x) p21.x = e.x;
+            else p21.y = e.y;
 
 
-            } else {
-                featurePoints.forEach(p -> {
-                    if (p.x == x) p.x = e.x;
-                    if (p.y == y) p.y = e.y;
-                });
-            }
-        } else if (selected) {
-            int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
+        } else {
             featurePoints.forEach(p -> {
-                p.x += dx;
-                p.y += dy;
+                if (p.x == x) p.x = e.x;
+                if (p.y == y) p.y = e.y;
             });
         }
-        redraw();
-        dragBeginPoint.x = e.x;
-        dragBeginPoint.y = e.y;
     }
 
     @Override

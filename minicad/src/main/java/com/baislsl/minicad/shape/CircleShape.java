@@ -25,33 +25,20 @@ public class CircleShape extends AbstractShape {
     }
 
     @Override
-    public void mouseMove(MouseEvent e) {
-        if (currentPoint != null) {
-            Rectangle rect = getBounds();
-            double r = rect.width / 2.0, ox = rect.x + r, oy = rect.y + r;
-            r = Util2D.distance(e.x, e.y, ox, oy);
-            featurePoints.clear();
-            featurePoints.add(new Point((int) (ox), (int) (oy + r)));
-            featurePoints.add(new Point((int) (ox), (int) (oy - r)));
-            featurePoints.add(new Point((int) (ox - r), (int) (oy)));
-            featurePoints.add(new Point((int) (ox + r), (int) (oy)));
-            currentPoint = featurePoints.stream()
-                    .min((p1, p2) -> {
-                        double d = Util2D.distance(p1, new Point(e.x, e.y)) - Util2D.distance(p2, new Point(e.x, e.y));
-                        return d > 0 ? 1 : (d < 0 ? -1 : 0);
-                    }).orElse(null);
-        } else {
-            int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
-            featurePoints.forEach(p -> {
-                p.x += dx;
-                p.y += dy;
-            });
-        }
-        redraw();
-
-        // update drag point
-        dragBeginPoint.x = e.x;
-        dragBeginPoint.y = e.y;
+    protected void onFeaturePointDrag(MouseEvent e) {
+        Rectangle rect = getBounds();
+        double r = rect.width / 2.0, ox = rect.x + r, oy = rect.y + r;
+        r = Util2D.distance(e.x, e.y, ox, oy);
+        featurePoints.clear();
+        featurePoints.add(new Point((int) (ox), (int) (oy + r)));
+        featurePoints.add(new Point((int) (ox), (int) (oy - r)));
+        featurePoints.add(new Point((int) (ox - r), (int) (oy)));
+        featurePoints.add(new Point((int) (ox + r), (int) (oy)));
+        currentPoint = featurePoints.stream()
+                .min((p1, p2) -> {
+                    double d = Util2D.distance(p1, new Point(e.x, e.y)) - Util2D.distance(p2, new Point(e.x, e.y));
+                    return d > 0 ? 1 : (d < 0 ? -1 : 0);
+                }).orElse(null);
     }
 
     @Override

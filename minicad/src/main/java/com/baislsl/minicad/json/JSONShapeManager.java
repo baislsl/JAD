@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JSONShapeManager {
     private DrawBoard canvas;

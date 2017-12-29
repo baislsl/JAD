@@ -21,38 +21,25 @@ public class OvalShape extends AbstractShape {
     }
 
     @Override
-    public void mouseMove(MouseEvent e) {
-        if (currentPoint != null) {
-            Rectangle r = getBounds();
-            double rx = r.width / 2.0, ry = r.height / 2.0, ox = r.x + rx, oy = r.y + ry;
-            double d1 = Util2D.distance(e.x, e.y, ox, oy),
-                    d2 = Util2D.distance(currentPoint.x, currentPoint.y, ox, oy);
-            double rate = d1 / d2;
-            rx *= rate;
-            ry *= rate;
+    protected void onFeaturePointDrag(MouseEvent e) {
+        Rectangle r = getBounds();
+        double rx = r.width / 2.0, ry = r.height / 2.0, ox = r.x + rx, oy = r.y + ry;
+        double d1 = Util2D.distance(e.x, e.y, ox, oy),
+                d2 = Util2D.distance(currentPoint.x, currentPoint.y, ox, oy);
+        double rate = d1 / d2;
+        rx *= rate;
+        ry *= rate;
 
-            featurePoints.clear();
-            featurePoints.add(new Point((int) (ox), (int) (oy + ry)));
-            featurePoints.add(new Point((int) (ox), (int) (oy - ry)));
-            featurePoints.add(new Point((int) (ox - rx), (int) (oy)));
-            featurePoints.add(new Point((int) (ox + rx), (int) (oy)));
-            currentPoint = featurePoints.stream()
-                    .min((p1, p2) -> {
-                        double d = Util2D.distance(p1, new Point(e.x, e.y)) - Util2D.distance(p2, new Point(e.x, e.y));
-                        return d > 0 ? 1 : (d < 0 ? -1 : 0);
-                    }).orElse(null);
-        } else {
-            int dx = e.x - dragBeginPoint.x, dy = e.y - dragBeginPoint.y;
-            featurePoints.forEach(p -> {
-                p.x += dx;
-                p.y += dy;
-            });
-        }
-        redraw();
-
-        // update drag point
-        dragBeginPoint.x = e.x;
-        dragBeginPoint.y = e.y;
+        featurePoints.clear();
+        featurePoints.add(new Point((int) (ox), (int) (oy + ry)));
+        featurePoints.add(new Point((int) (ox), (int) (oy - ry)));
+        featurePoints.add(new Point((int) (ox - rx), (int) (oy)));
+        featurePoints.add(new Point((int) (ox + rx), (int) (oy)));
+        currentPoint = featurePoints.stream()
+                .min((p1, p2) -> {
+                    double d = Util2D.distance(p1, new Point(e.x, e.y)) - Util2D.distance(p2, new Point(e.x, e.y));
+                    return d > 0 ? 1 : (d < 0 ? -1 : 0);
+                }).orElse(null);
     }
 
     @Override
