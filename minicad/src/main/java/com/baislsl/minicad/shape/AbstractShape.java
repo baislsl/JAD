@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Shape一个抽象实现， 实现了图形拖动，颜色宽度设置，json数据存取
  *
  * @see LineShape
  * @see CircleShape

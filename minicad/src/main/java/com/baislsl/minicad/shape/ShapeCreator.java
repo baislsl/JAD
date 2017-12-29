@@ -14,6 +14,9 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 特殊的Shape实现，用来生成新的Shape图形，实现拖动效果
+ */
 public class ShapeCreator implements Shape {
     private final static Logger log = LoggerFactory.getLogger(ShapeCreator.class);
     private volatile boolean inDrag;

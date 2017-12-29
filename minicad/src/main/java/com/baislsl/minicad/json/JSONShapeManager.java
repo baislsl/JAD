@@ -52,6 +52,7 @@ public class JSONShapeManager {
         for (ShapeType shapeType : ShapeType.values()) {
             if (shapeType.getShapeClazz().getSimpleName().equals(shapeName)) {
                 Shape shape = shapeType.newShapeInstance(canvas, 0, 0, 0, 0);
+                Objects.requireNonNull(shape);
                 shape.loadFormJSONObject(jsonObject, canvas);
                 return shape;
             }
