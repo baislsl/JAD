@@ -9,12 +9,13 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener {
     private final static Logger log = LoggerFactory.getLogger(AbstractShape.class);
@@ -225,5 +226,55 @@ abstract class AbstractShape implements Shape, MouseListener, MouseMoveListener 
             max.y = Math.max(max.y, p.y);
         });
         return new Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject toJSONObject() {
+        JSONObject root = new JSONObject();
+        root.put("name", this.getClass().getSimpleName());
+
+        JSONObject colorObject = new JSONObject();
+        colorObject.put("red", color.getRed());
+        colorObject.put("green", color.getGreen());
+        colorObject.put("blue", color.getBlue());
+        root.put("color", colorObject);
+
+        root.put("width", width);
+
+        JSONArray jsonArray = new JSONArray();
+        for (Point p : featurePoints) {
+            JSONObject op = new JSONObject();
+            op.put("x", p.x);
+            op.put("y", p.y);
+            jsonArray.add(op);
+        }
+        root.put("points", jsonArray);
+
+        return root;
+    }
+
+    @Override
+    public void loadFormJSONObject(JSONObject object, DrawBoard drawBoard) {
+        String name = (String) object.get("name");
+        assert name.equals(this.getClass().getSimpleName());
+
+        this.canvas = drawBoard;
+
+        this.width = Math.toIntExact((long) object.get("width"));
+
+        JSONObject colorObject = (JSONObject) object.get("color");
+        int r = Math.toIntExact((long) colorObject.get("red")),
+                g = Math.toIntExact((long) colorObject.get("green")),
+                b = Math.toIntExact((long) colorObject.get("blue"));
+        this.color = new Color(drawBoard.getCanvas().getDisplay(), r, g, b);
+
+        this.featurePoints.clear();
+        JSONArray array = (JSONArray) object.get("points");
+        for (Object o : array) {
+            JSONObject op = (JSONObject) o;
+            Point p = new Point(Math.toIntExact((long) op.get("x")), Math.toIntExact((long) op.get("y")));
+            featurePoints.add(p);
+        }
     }
 }

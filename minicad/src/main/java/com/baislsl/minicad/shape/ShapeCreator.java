@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,5 +113,15 @@ public class ShapeCreator implements Shape {
     @Override
     public boolean intersects(Point p) {
         throw new RuntimeException("Shape creator should not have intersects method");
+    }
+
+    @Override
+    public void loadFormJSONObject(JSONObject object, DrawBoard drawBoard) {
+        throw new RuntimeException("Shape creator should not load form json object");
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        throw new RuntimeException("Shape creator should not dump to json object");
     }
 }

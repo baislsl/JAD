@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,5 +81,19 @@ public class TextShape extends AbstractShape {
     @Override
     public boolean intersects(Point p) {
         return getBounds().contains(p);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject toJSONObject() {
+        JSONObject root = super.toJSONObject();
+        root.put("text", text);
+        return root;
+    }
+
+    @Override
+    public void loadFormJSONObject(JSONObject object, DrawBoard drawBoard) {
+        super.loadFormJSONObject(object, drawBoard);
+        this.text = (String) object.get("text");
     }
 }

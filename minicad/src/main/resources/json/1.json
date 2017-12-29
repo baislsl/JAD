@@ -1,0 +1,70 @@
+{
+  "shape": [
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "LineShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 189,
+          "y": 121
+        },
+        {
+          "x": 335,
+          "y": 227
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "TextShape",
+      "width": 2,
+      "text": "input text",
+      "points": [
+        {
+          "x": 319,
+          "y": 112
+        },
+        {
+          "x": 358,
+          "y": 135
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "RectangleShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 120,
+          "y": 241
+        },
+        {
+          "x": 245,
+          "y": 287
+        },
+        {
+          "x": 120,
+          "y": 287
+        },
+        {
+          "x": 245,
+          "y": 241
+        }
+      ]
+    }
+  ]
+}

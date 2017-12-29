@@ -31,6 +31,7 @@
         <swt.version>4.3</swt.version>
         <opencsv.version>4.1</opencsv.version>
         <jsr305.version>3.0.2</jsr305.version>
+        <json.version>1.1.1</json.version>
     </properties>
 
     <repositories>
@@ -71,6 +72,11 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>${jsr305.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json.version}</version>
         </dependency>
     </dependencies>
     <build>

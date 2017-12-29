@@ -117,4 +117,13 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
     public void setUpMouseListener() {
         canvas.addMouseListener(defaultMouseAdapter);
     }
+
+
+    public List<Shape> getShapeList(){
+        return shapeList;
+    }
+
+    public void setShapeList(List<Shape> shapeList) {
+        this.shapeList = shapeList;
+    }
 }

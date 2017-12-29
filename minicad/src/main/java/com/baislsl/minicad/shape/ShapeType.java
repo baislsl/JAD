@@ -2,41 +2,48 @@ package com.baislsl.minicad.shape;
 
 import com.baislsl.minicad.ui.draw.DrawBoard;
 
-import java.util.function.Supplier;
-
 public enum ShapeType {
-    LINE {
+    LINE(LineShape.class) {
         @Override
-        Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
             return new LineShape(drawBoard, x1, y1, x2, y2);
         }
     },
-    RECTANGLE {
+    RECTANGLE(RectangleShape.class) {
         @Override
-        Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
             return new RectangleShape(drawBoard, x1, y1, x2, y2);
         }
     },
-    TEXT {
+    TEXT(TextShape.class) {
         @Override
-        Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
             return new TextShape(drawBoard, x1, y1, x2, y2);
         }
     },
-    CIRCLE {
+    CIRCLE(CircleShape.class) {
         @Override
-        Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
             return new CircleShape(drawBoard, x1, y1, x2, y2);
         }
     },
-    OVAL {
+    OVAL(OvalShape.class) {
         @Override
-        Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
+        public Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2) {
             return new OvalShape(drawBoard, x1, y1, x2, y2);
         }
     };
 
-    abstract Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2);
+    private Class<?> clazz;
 
+    ShapeType(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public abstract Shape newShapeInstance(DrawBoard drawBoard, int x1, int y1, int x2, int y2);
 
 }

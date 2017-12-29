@@ -1,0 +1,201 @@
+{
+  "shape": [
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "LineShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 208,
+          "y": 96
+        },
+        {
+          "x": 218,
+          "y": 220
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "LineShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 288,
+          "y": 170
+        },
+        {
+          "x": 260,
+          "y": 297
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "LineShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 356,
+          "y": 257
+        },
+        {
+          "x": 271,
+          "y": 348
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "LineShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 109,
+          "y": 268
+        },
+        {
+          "x": 375,
+          "y": 417
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "RectangleShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 244,
+          "y": 118
+        },
+        {
+          "x": 330,
+          "y": 234
+        },
+        {
+          "x": 244,
+          "y": 234
+        },
+        {
+          "x": 330,
+          "y": 118
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "CircleShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 142,
+          "y": 113
+        },
+        {
+          "x": 142,
+          "y": 207
+        },
+        {
+          "x": 95,
+          "y": 160
+        },
+        {
+          "x": 189,
+          "y": 160
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "OvalShape",
+      "width": 2,
+      "points": [
+        {
+          "x": 341,
+          "y": 194
+        },
+        {
+          "x": 377,
+          "y": 194
+        },
+        {
+          "x": 359,
+          "y": 106
+        },
+        {
+          "x": 359,
+          "y": 283
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "TextShape",
+      "width": 2,
+      "text": "input text",
+      "points": [
+        {
+          "x": 195,
+          "y": 46
+        },
+        {
+          "x": 360,
+          "y": 144
+        }
+      ]
+    },
+    {
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255
+      },
+      "name": "TextShape",
+      "width": 2,
+      "text": "input text",
+      "points": [
+        {
+          "x": 350,
+          "y": 131
+        },
+        {
+          "x": 276,
+          "y": 117
+        }
+      ]
+    }
+  ]
+}
