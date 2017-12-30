@@ -2,6 +2,7 @@ package com.baislsl.minicad.ui.draw;
 
 import com.baislsl.minicad.shape.Shape;
 import com.baislsl.minicad.shape.ShapeCreator;
+import com.baislsl.minicad.shape.TextShape;
 import com.baislsl.minicad.util.Mode;
 import com.baislsl.minicad.shape.ShapeType;
 import org.eclipse.swt.SWT;
@@ -44,7 +45,7 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
                 redraw();
             } else {    // MODIFY
                 Shape shape = fetchShape(e.x, e.y);
-                if(shape != null)
+                if (shape != null)
                     shape.install(DrawPanel.this);
             }
         }
@@ -83,10 +84,20 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
         canvas.addMouseListener(defaultMouseAdapter);
     }
 
+    /**
+     * 获取于特定点所在的图形，其中line、 rectangle、circle等图形的优先级大于文字
+     *
+     * @param x x坐标
+     * @param y y坐标
+     * @return 图形对象，如果无则为0
+     */
     private Shape fetchShape(int x, int y) {
-        // TODO: use 多进程
         for (Shape shape : shapeList) {
-            if (shape.intersects(new Point(x, y)))
+            if (!(shape instanceof TextShape) && shape.intersects(new Point(x, y)))
+                return shape;
+        }
+        for (Shape shape : shapeList) {
+            if ((shape instanceof TextShape) && shape.intersects(new Point(x, y)))
                 return shape;
         }
         return null;
@@ -124,7 +135,7 @@ public class DrawPanel extends Composite implements MessageReceiver, DrawBoard {
     }
 
 
-    public List<Shape> getShapeList(){
+    public List<Shape> getShapeList() {
         return shapeList;
     }
 
