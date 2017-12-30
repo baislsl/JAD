@@ -44,8 +44,8 @@ public class TextShape extends AbstractShape {
         Shell shell = new Shell(display);
         shell.setLayout(new GridLayout(2, true));
 
-        newTextEditor(shell);
         newColorSelectPanel(shell);
+        newTextEditor(shell);
 
         shell.pack();
         shell.open();
@@ -77,7 +77,7 @@ public class TextShape extends AbstractShape {
                 x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
         FontData fontData = gc.getFont().getFontData()[0];
         Point dpi = gc.getDevice().getDPI();    // 每英寸x，y偏移量
-        fontData.setHeight((y2 - y1)* dpi.y/144);
+        fontData.setHeight(Math.abs(y2 - y1)* dpi.y/144);
         gc.setFont(new Font(drawBoard.getCanvas().getDisplay(), fontData));
         Point textSize = gc.textExtent(text);
 
