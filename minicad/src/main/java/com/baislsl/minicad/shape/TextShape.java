@@ -1,6 +1,5 @@
 package com.baislsl.minicad.shape;
 
-import com.baislsl.minicad.Main;
 import com.baislsl.minicad.ui.draw.DrawBoard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -76,6 +75,7 @@ public class TextShape extends AbstractShape {
         int x1 = featurePoints.get(0).x, y1 = featurePoints.get(0).y,
                 x2 = featurePoints.get(1).x, y2 = featurePoints.get(1).y;
         FontData fontData = gc.getFont().getFontData()[0];
+        // TODO: 144在我电脑上能够正好得出覆盖英文的方框，但换成中文会出现问题，其他系统和屏幕未测试过
         Point dpi = gc.getDevice().getDPI();    // 每英寸x，y偏移量
         fontData.setHeight(Math.abs(y2 - y1)* dpi.y/144);
         gc.setFont(new Font(drawBoard.getCanvas().getDisplay(), fontData));
