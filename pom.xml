@@ -12,6 +12,7 @@
         <module>pta</module>
         <module>spreadsheet</module>
         <module>minicad</module>
+        <module>techsupport</module>
     </modules>
 
 
